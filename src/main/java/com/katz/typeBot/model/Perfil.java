@@ -26,18 +26,32 @@ public class Perfil {
     private List<HabilidadesTecnicas> habilidades = new ArrayList<>();
     @OneToMany(mappedBy = "perfil")
     private List<Idiomas> idiomas = new ArrayList<>();
+    @OneToMany(mappedBy = "perfil")
+    private List<Experiencia> experiencia = new ArrayList<>();
 
-    @Column
     private String nome;
+
     private String email;
+
     private String telefone;
+
     private String linkedin;
+
     private String curriculo;
+
     private String endereco;
+
     private String senioridade;
+
+    @Column(name = "pretensao_salarial")
+
     private BigDecimal pretensaoSalarial;
+
     private String pcd;
+
     private String certificacoes;
+
+    @Column(name = "cursos_complementares")
     private String cursosComplementares;
 
 }

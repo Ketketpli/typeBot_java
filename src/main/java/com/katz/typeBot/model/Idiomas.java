@@ -22,6 +22,10 @@ public class Idiomas {
     @JoinColumn(name = "perfil_id")
     private Perfil perfil;
 
+    @Column(name = "nome_idiomas")
     private String nomeIdiomas;
+
     private String proeficiencia;
+
+    private String descricao;
 }

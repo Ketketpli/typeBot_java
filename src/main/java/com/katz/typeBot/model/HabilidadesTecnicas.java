@@ -22,7 +22,7 @@ public class HabilidadesTecnicas {
     @JoinColumn(name = "perfil_id")
     private Perfil perfil;
 
-    @Column
     private String habilidades;
+
     private String proeficiencia;
 }
