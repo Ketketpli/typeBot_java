@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "perfis")
@@ -20,6 +22,11 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToMany(mappedBy = "perfil")
+    private List<HabilidadesTecnicas> habilidades = new ArrayList<>();
+    @OneToMany(mappedBy = "perfil")
+    private List<Idiomas> idiomas = new ArrayList<>();
+
     @Column
     private String nome;
     private String email;
@@ -30,5 +37,7 @@ public class Perfil {
     private String senioridade;
     private BigDecimal pretensaoSalarial;
     private String pcd;
+    private String certificacoes;
+    private String cursosComplementares;
 
 }
