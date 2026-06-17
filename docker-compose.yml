@@ -1,0 +1,11 @@
+# --- CONFIGURANDO O postgreSQL NO DOCKER --- #
+services:
+  database_test:
+    image: postgres:15
+    container_name: dockerTest
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - "5432:5432"
