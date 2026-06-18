@@ -28,6 +28,10 @@ public class Perfil {
     private List<Idiomas> idiomas = new ArrayList<>();
     @OneToMany(mappedBy = "perfil")
     private List<Experiencias> experiencias = new ArrayList<>();
+    @OneToMany(mappedBy = "perfil")
+    private List<Certificacoes> certificacoes = new ArrayList<>();
+    @OneToMany(mappedBy = "perfil")
+    private List<CursosComplementares> cursos = new ArrayList<>();
 
     private String nome;
 
@@ -48,10 +52,5 @@ public class Perfil {
     private BigDecimal pretensaoSalarial;
 
     private String pcd;
-
-    private String certificacoes;
-
-    @Column(name = "cursos_complementares")
-    private String cursosComplementares;
 
 }
