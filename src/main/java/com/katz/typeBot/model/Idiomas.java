@@ -27,5 +27,4 @@ public class Idiomas {
 
     private String proeficiencia;
 
-    private String descricao;
 }

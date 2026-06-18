@@ -27,7 +27,7 @@ public class Perfil {
     @OneToMany(mappedBy = "perfil")
     private List<Idiomas> idiomas = new ArrayList<>();
     @OneToMany(mappedBy = "perfil")
-    private List<Experiencia> experiencia = new ArrayList<>();
+    private List<Experiencias> experiencias = new ArrayList<>();
 
     private String nome;
 
