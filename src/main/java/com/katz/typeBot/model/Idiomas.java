@@ -25,6 +25,7 @@ public class Idiomas {
     @Column(name = "nome_idiomas")
     private String nomeIdiomas;
 
-    private String proeficiencia;
+    @Column(name = "proeficiencia_idioma")
+    private String proeficienciaIdioma;
 
 }

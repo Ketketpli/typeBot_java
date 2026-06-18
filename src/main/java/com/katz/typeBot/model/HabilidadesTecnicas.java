@@ -24,5 +24,6 @@ public class HabilidadesTecnicas {
 
     private String habilidades;
 
-    private String proeficiencia;
+    @Column(name = "proeficiencia_habilidade")
+    private String proeficienciaHabilidade;
 }
