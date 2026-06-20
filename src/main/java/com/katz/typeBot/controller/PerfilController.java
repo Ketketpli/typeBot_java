@@ -4,7 +4,6 @@ import com.katz.typeBot.dto.PerfilRequestDto;
 import com.katz.typeBot.dto.PerfilResponseDto;
 import com.katz.typeBot.service.PerfilService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +41,11 @@ public class PerfilController {
     @GetMapping
     public ResponseEntity<List<PerfilResponseDto>> getPerfil() {
         return ResponseEntity.status(HttpStatus.OK).body(perfilService.getPerfil());
+    }
+
+    @GetMapping(value = "/detalhado")
+    public ResponseEntity<List<PerfilRequestDto>> getPerfilDetalhado() {
+        return ResponseEntity.status(HttpStatus.OK).body(perfilService.getPerfilDetalhado());
     }
 
     @GetMapping(value = "/{email}")
