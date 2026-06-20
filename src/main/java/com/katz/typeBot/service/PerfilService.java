@@ -72,6 +72,21 @@ public class PerfilService {
                 .toList();
     }
 
+    public List<PerfilRequestDto> getPerfilDetalhado() {
+        List<Perfil> listaDePerfisDetalhados = perfilRepository.findAll();
+        return listaDePerfisDetalhados.stream()
+                .map(perfil -> new PerfilRequestDto(perfil.getNome(),
+                        perfil.getEmail(),
+                        perfil.getTelefone(),
+                        perfil.getLinkedin(),
+                        perfil.getCurriculo(),
+                        perfil.getEndereco(),
+                        perfil.getSenioridade(),
+                        perfil.getPretensaoSalarial(),
+                        perfil.getPcd()))
+                .toList();
+    }
+
     public PerfilResponseDto findByEmail(String email) {
         Perfil perfil = perfilRepository.findByEmail(email).orElseThrow(PerfilNotFoundException::new);
 
