@@ -61,8 +61,8 @@ public class PerfilService {
                 savePerfil.getPcd());
     }
 
-    public void deletePerfilById(Long email) {
-        perfilRepository.deleteById(email);
+    public void deletePerfilById(Long id) {
+        perfilRepository.deleteById(id);
     }
 
     public List<PerfilResponseDto> getPerfil() {
