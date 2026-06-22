@@ -31,6 +31,7 @@ public class PerfilService {
         Perfil savePerfil = perfilRepository.save(perfil);
 
         return new PerfilResponseDto(
+                savePerfil.getId(),
                 savePerfil.getNome(),
                 savePerfil.getEmail(),
                 savePerfil.getTelefone());
@@ -68,7 +69,7 @@ public class PerfilService {
     public List<PerfilResponseDto> getPerfil() {
         List<Perfil> listaDePerfis = perfilRepository.findAll();
         return listaDePerfis.stream()
-                .map(perfil -> new PerfilResponseDto(perfil.getNome(), perfil.getEmail(), perfil.getTelefone()))
+                .map(perfil -> new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone()))
                 .toList();
     }
 
@@ -90,7 +91,7 @@ public class PerfilService {
     public PerfilResponseDto findByEmail(String email) {
         Perfil perfil = perfilRepository.findByEmail(email).orElseThrow(PerfilNotFoundException::new);
 
-        return new PerfilResponseDto(perfil.getNome(), perfil.getEmail(), perfil.getTelefone());
+        return new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone());
     }
 
 }
