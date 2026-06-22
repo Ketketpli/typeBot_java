@@ -48,9 +48,11 @@ public class Perfil {
     private String senioridade;
 
     @Column(name = "pretensao_salarial")
-
     private BigDecimal pretensaoSalarial;
 
     private String pcd;
+
+    @Enumerated(EnumType.STRING)
+    private StatusCandidato status;
 
 }
