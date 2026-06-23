@@ -4,6 +4,7 @@ import com.katz.typeBot.dto.PerfilRequestDto;
 import com.katz.typeBot.dto.PerfilResponseDto;
 import com.katz.typeBot.exceptions.PerfilNotFoundException;
 import com.katz.typeBot.model.Perfil;
+import com.katz.typeBot.model.StatusCandidato;
 import com.katz.typeBot.repository.PerfilRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,15 @@ public class PerfilService {
         perfil.setPretensaoSalarial(perfilRequestDto.pretensaoSalarial());
         perfil.setPcd(perfilRequestDto.pcd());
 
+        perfil.setStatus(StatusCandidato.EM_ANALISE);
         Perfil savePerfil = perfilRepository.save(perfil);
 
         return new PerfilResponseDto(
                 savePerfil.getId(),
                 savePerfil.getNome(),
                 savePerfil.getEmail(),
-                savePerfil.getTelefone());
+                savePerfil.getTelefone(),
+                savePerfil.getStatus());
     }
 
     public PerfilRequestDto updatePerfil(Long id, PerfilRequestDto perfilRequestDto) {
@@ -63,13 +66,14 @@ public class PerfilService {
     }
 
     public void deletePerfilById(Long id) {
+        perfilRepository.findById(id).orElseThrow(PerfilNotFoundException::new);
         perfilRepository.deleteById(id);
     }
 
     public List<PerfilResponseDto> getPerfil() {
         List<Perfil> listaDePerfis = perfilRepository.findAll();
         return listaDePerfis.stream()
-                .map(perfil -> new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone()))
+                .map(perfil -> new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone(), perfil.getStatus()))
                 .toList();
     }
 
@@ -90,8 +94,19 @@ public class PerfilService {
 
     public PerfilResponseDto findByEmail(String email) {
         Perfil perfil = perfilRepository.findByEmail(email).orElseThrow(PerfilNotFoundException::new);
+        return new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone(), perfil.getStatus());
+    }
 
-        return new PerfilResponseDto(perfil.getId(), perfil.getNome(), perfil.getEmail(), perfil.getTelefone());
+    public PerfilResponseDto updateStatus(StatusCandidato status, Long id) {
+        Perfil perfilStatus = perfilRepository.findById(id).orElseThrow(PerfilNotFoundException::new);
+        perfilStatus.setStatus(status);
+        perfilRepository.save(perfilStatus);
+        return new PerfilResponseDto(
+                perfilStatus.getId(),
+                perfilStatus.getNome(),
+                perfilStatus.getEmail(),
+                perfilStatus.getTelefone(),
+                perfilStatus.getStatus());
     }
 
 }

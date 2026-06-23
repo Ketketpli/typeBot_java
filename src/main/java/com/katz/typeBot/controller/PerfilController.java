@@ -2,6 +2,7 @@ package com.katz.typeBot.controller;
 
 import com.katz.typeBot.dto.PerfilRequestDto;
 import com.katz.typeBot.dto.PerfilResponseDto;
+import com.katz.typeBot.model.StatusCandidato;
 import com.katz.typeBot.service.PerfilService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,4 +53,9 @@ public class PerfilController {
         return ResponseEntity.status(HttpStatus.OK).body(emailPerfil);
     }
 
+    @PutMapping(value = "/status/{id}")
+    public ResponseEntity<PerfilResponseDto> updateStatus(@Valid @PathVariable Long id, @RequestBody StatusCandidato status) {
+        PerfilResponseDto updateStatus = perfilService.updateStatus(status, id);
+        return ResponseEntity.status(HttpStatus.OK).body(updateStatus);
+    }
 }
