@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Groq API Key ###
+application.properties
