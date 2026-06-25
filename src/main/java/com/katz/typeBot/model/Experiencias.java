@@ -25,6 +25,8 @@ public class Experiencias {
     @Column(name = "nome_empresa")
     private String empresa;
 
+    private String cargo;
+
     @Column(name = "data_inicio")
     private String dataInicio;
 
