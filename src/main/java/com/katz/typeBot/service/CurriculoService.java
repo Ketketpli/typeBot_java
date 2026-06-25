@@ -1,5 +1,6 @@
 package com.katz.typeBot.service;
 
+import com.katz.typeBot.exceptions.JsonProcessingException;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -8,6 +9,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +52,7 @@ public class CurriculoService {
     private String groqApiKey;
 
 
-// Metodo que ira converter os dados em json depois de passar pelo groq
+// Método que utiliza o Groq para converter os dados extraidos em Json
 
     public String processarCurriculo(String textoCurriculo) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -58,57 +61,55 @@ public class CurriculoService {
         Map<String, String> message = new HashMap<>();
         message.put("role", "user");
         message.put("content", """
-        Analise o currículo abaixo e extraia as informações.
-        
-        Retorne APENAS um JSON válido.
-                                
-        Regras:
-        - Não utilize markdown.
-        - Não utilize blocos ```json.
-        - Não utilize explicações.
-        - Não utilize comentários.
-        - Caso um campo não seja encontrado, retorne string vazia "".
-        - Para listas sem conteúdo, retorne [].
-        - O JSON deve seguir exatamente esta estrutura:
-                                                                
-        {
-          "nome": "",
-          "email": "",
-          "telefone": "",
-          "linkedin": "",
-          "endereco": "",
-          "senioridade": "",
-          "pretensaoSalarial": "",
-          "pcd": "",
-          "habilidades": [],
-          "idiomas": [],
-          "experiencias": [],
-          "certificacoes": [],
-          "cursos": []
-        }
-        Retorne APENAS o JSON, sem texto adicional.
+                Analise o currículo abaixo e extraia as informações.
                         
-        Currículo:
-        """ + textoCurriculo);
+                Retorne APENAS um JSON válido.
+                                        
+                Regras:
+                - Não utilize markdown.
+                - Não utilize blocos ```json.
+                - Não utilize explicações.
+                - Não utilize comentários.
+                - Caso um campo não seja encontrado, retorne string vazia "".
+                - Para listas sem conteúdo, retorne [].
+                - O JSON deve seguir exatamente esta estrutura:
+                                                                        
+                {
+                  "nome": "",
+                  "email": "",
+                  "telefone": "",
+                  "linkedin": "",
+                  "endereco": "",
+                  "senioridade": "",
+                  "pretensaoSalarial": "",
+                  "pcd": "",
+                  "habilidades": [],
+                  "idiomas": [],
+                  "experiencias": [],
+                  "certificacoes": [],
+                  "cursos": []
+                }
+                Retorne APENAS o JSON, sem texto adicional.
+                                
+                Currículo:
+                """ + textoCurriculo);
 
         body.put("messages", List.of(message));
 
-        System.out.println("BODY: " + body);
-
-        return webClient.post()
+        String response = webClient.post()
                 .uri("https://api.groq.com/openai/v1/chat/completions")
                 .header("Authorization", "Bearer " + groqApiKey)
                 .header("Content-Type", "application/json")
                 .bodyValue(body)
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError(), response ->
-                        response.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
-                                    System.out.println("ERRO GROQ: " + errorBody);
-                                    return reactor.core.publisher.Mono.error(new RuntimeException(errorBody));
-                                })
-                )
                 .bodyToMono(String.class)
                 .block();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response);
+            return root.path("choices").get(0).path("message").path("content").asText();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
