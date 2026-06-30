@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CursosComplementares {
+public class CursosComplementares implements PerfilAssociavel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
