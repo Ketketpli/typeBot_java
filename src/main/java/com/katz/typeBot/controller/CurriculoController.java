@@ -3,6 +3,7 @@ package com.katz.typeBot.controller;
 import com.katz.typeBot.service.CurriculoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,6 @@ public class CurriculoController {
         }
 
         String resultado = curriculoService.processarCurriculo(texto);
-        return ResponseEntity.status(HttpStatus.OK).body(resultado);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(resultado);
     }
 }
