@@ -22,15 +22,15 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "perfil")
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HabilidadesTecnicas> habilidades = new ArrayList<>();
-    @OneToMany(mappedBy = "perfil")
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Idiomas> idiomas = new ArrayList<>();
-    @OneToMany(mappedBy = "perfil")
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Experiencias> experiencias = new ArrayList<>();
-    @OneToMany(mappedBy = "perfil")
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Certificacoes> certificacoes = new ArrayList<>();
-    @OneToMany(mappedBy = "perfil")
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CursosComplementares> cursos = new ArrayList<>();
 
     private String nome;
@@ -40,8 +40,6 @@ public class Perfil {
     private String telefone;
 
     private String linkedin;
-
-    private String curriculo;
 
     private String endereco;
 
