@@ -7,7 +7,6 @@ public record PerfilRequestDto(
         String email,
         String telefone,
         String linkedin,
-        String curriculo,
         String endereco,
         String senioridade,
         BigDecimal pretensaoSalarial,
