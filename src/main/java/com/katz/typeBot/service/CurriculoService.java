@@ -1,11 +1,13 @@
 package com.katz.typeBot.service;
 
 import com.katz.typeBot.exceptions.JsonProcessingException;
+import com.katz.typeBot.repository.*;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -62,18 +64,14 @@ public class CurriculoService {
         message.put("role", "user");
         message.put("content", """
                 Analise o currículo abaixo e extraia as informações.
-                        
-                Retorne APENAS um JSON válido.
-                                        
+
+                Retorne APENAS um JSON válido, sem markdown, sem blocos ```json, sem explicações e sem comentários.
+
                 Regras:
-                - Não utilize markdown.
-                - Não utilize blocos ```json.
-                - Não utilize explicações.
-                - Não utilize comentários.
                 - Caso um campo não seja encontrado, retorne string vazia "".
                 - Para listas sem conteúdo, retorne [].
-                - O JSON deve seguir exatamente esta estrutura:
-                                                                        
+                - Siga EXATAMENTE a estrutura abaixo, incluindo os objetos dentro das listas:
+
                 {
                   "nome": "",
                   "email": "",
@@ -83,14 +81,13 @@ public class CurriculoService {
                   "senioridade": "",
                   "pretensaoSalarial": "",
                   "pcd": "",
-                  "habilidades": [],
-                  "idiomas": [],
-                  "experiencias": [],
-                  "certificacoes": [],
-                  "cursos": []
+                  "habilidades": [{"nome": "", "nivel": ""}],
+                  "idiomas": [{"nome": "", "nivel": ""}],
+                  "experiencias": [{"empresa": "", "cargo": "", "periodo": "", "descricao": ""}],
+                  "certificacoes": [{"nome": "", "instituicao": "", "ano": ""}],
+                  "cursos": [{"nome": "", "instituicao": "", "ano": ""}]
                 }
-                Retorne APENAS o JSON, sem texto adicional.
-                                
+
                 Currículo:
                 """ + textoCurriculo);
 
